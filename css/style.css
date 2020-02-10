@@ -1,0 +1,22 @@
+html {
+    box-sizing: border-box;
+    /* 16px is the default for most browsers */
+    font-size: 16px;
+  }
+  
+  *,
+  *:before,
+  *:after {
+    box-sizing: inherit;
+  }
+
+  form {
+      margin: 2% 0;
+  }
+  
+  .wrapper {
+      max-width: 640px;
+      margin: 3% auto;
+      padding: 1%;
+      background-color: lightgrey;
+  }
