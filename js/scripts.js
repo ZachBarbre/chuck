@@ -5,10 +5,11 @@ const pixaApiUrl = `https://pixabay.com/api/?key=15212881-66f33ab18e58d1ed2aa325
 const makeChuckButtom = document.querySelector('#chuckbuttom');
 const submitFormButton = document.querySelector('#submitForm');
 
+
 submitFormButton.addEventListener('click', function(event){
     event.preventDefault();
-    const categoryInput = document.querySelector('#categorySelect');
-    category = categoryInput.value;
+    const categoryOption = document.querySelector('select');
+    category = categoryOption.value;
     getChuck(category);
 });
 
@@ -24,3 +25,38 @@ function getChuck(category){
 };
 
 getChuck(category);
+
+(function (){
+    
+    // get(chuckCategoryApiUrl).then(function(catagoryResponse){
+    //     catagoryResponse.forEach(category => {
+    //         const categoryOption = document.createElement('option')
+    //         categoryOption.value = category;
+    //         categoryOption.innerHTML =  `${category[0].toUpperCase() + category.substring(1)} Chuck`
+    //         categoryInput.appendChild(categoryOption);
+    //     }
+    //     )})
+    })();
+    
+    function getCategories(){
+        const chuckCategoryApiUrl = 'https://api.chucknorris.io/jokes/categories';
+        const categoryLabel = document.querySelector('#categorySelectLabel');
+        get(chuckCategoryApiUrl).then(response => {
+            const filteredCategories =  response.filter(category => {
+                if (category !== 'explicit'){
+                    return category;
+                }
+            });
+            const categorySelect = document.createElement('select');
+            categoryLabel.appendChild(categorySelect);
+            filteredCategories.map(categoryElement => {
+                const categoryOption = document.createElement('option');
+                categoryOption.value = categoryElement;
+                categoryOption.innerHTML = `${categoryElement[0].toUpperCase() + categoryElement.substring(1)} Chuck`;
+                categorySelect.appendChild(categoryOption);
+            })
+        });
+        
+    }
+    
+    getCategories();
