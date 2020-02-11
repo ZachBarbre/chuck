@@ -1,9 +1,15 @@
 'use strict';
 
-let category = `dev`
-const pixaApiUrl = `https://pixabay.com/api/?key=15212881-66f33ab18e58d1ed2aa325c87`;
+let category = `religion`
+
 const makeChuckButtom = document.querySelector('#chuckbuttom');
 const submitFormButton = document.querySelector('#submitForm');
+const closeModalButtom = document.querySelector('#closeModal');
+
+closeModalButtom.addEventListener('click', function(event){
+    const modalWindow = document.querySelector('.modal-overlay');
+    modalWindow.classList.toggle('open');
+})
 
 
 submitFormButton.addEventListener('click', function(event){
@@ -21,7 +27,12 @@ makeChuckButtom.addEventListener('click', function(event){
 function getChuck(category){
     const chuckSaysParagraph = document.querySelector('#chucksays');
     const chuckApiUrl = `https://api.chucknorris.io/jokes/random?category=${category}`;
-    get(chuckApiUrl).then(response => chuckSaysParagraph.innerHTML = response.value);
+    const modalWindow = document.querySelector('.modal-overlay');
+    get(chuckApiUrl).then(response => {
+        chuckSaysParagraph.innerHTML = response.value;
+        modalWindow.classList.toggle('open');
+        getBackgroundImage(category);
+    });
 };
 
 function getCategories(){
@@ -47,3 +58,31 @@ function getCategories(){
 
 getCategories();
 getChuck(category);
+
+function getBackgroundImage(category) {
+    const imageCategory = categoryToPixabaySearch(category);
+    const pixaApiUrl = `https://pixabay.com/api/?key=15212881-66f33ab18e58d1ed2aa325c87&q=${imageCategory}`;
+    get(pixaApiUrl).then(response => {
+        setBackgound(response['hits'][getRandomInt(20)]['largeImageURL']);
+    });
+}
+
+function categoryToPixabaySearch(category){
+    if (category === 'dev'){
+        return 'development';
+    }
+    else {
+        return category
+    }
+}
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+
+function setBackgound(url){
+    const backgound = document.querySelector('body');
+    backgound.style.background = `url(${url}), no-repeat center center fixed`;
+    backgound.style.backgroundSize = `cover`;
+}
+

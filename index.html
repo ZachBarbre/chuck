@@ -8,12 +8,20 @@
 </head>
 <body>
     <div class="wrapper">
-        <p id="chucksays">Chuck says...</p>
-        <button type="button" id="chuckbuttom">More Chuck!</button>
+        <div class="wrapper--image">
+            <img src="images/jesus-chuck.jpg" alt="Chuck is God">
+        </div>
+        <button type="button" id="chuckbuttom" class="more-chuck-button">More Chuck!</button>
         <form id="chuckcategoryform">
-            <label id='categorySelectLabel'>Select a Category</label>
+            <label id='categorySelectLabel'>Select a Category: </label>
             <button type="submit" id="submitForm">Get Different Chuck!</button>
         </form>
+    </div>
+    <div class="modal-overlay">
+        <div class="model-content">
+            <span id="closeModal" class="model-close">X</span>
+            <p id="chucksays">Chuck says...</p>
+        </div>
     </div>
 </body>
 <script src="js/get.js"></script>
