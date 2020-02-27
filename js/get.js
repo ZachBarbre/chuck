@@ -12,3 +12,11 @@ function get(url){
         return error;
     });
 }
+
+const getWithAwait = async (url) => {
+    const response = await fetch(url);
+    console.log('Response is: ', response);
+    const data = await response.json();
+    console.log('Data is: ', data);
+    return data;
+}

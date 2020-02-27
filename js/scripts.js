@@ -24,47 +24,43 @@ makeChuckButtom.addEventListener('click', function(event){
     getChuck(category);
 });
 
-function getChuck(category){
-    const chuckSaysParagraph = document.querySelector('#chucksays');
+const getChuck = async (category) => {
     const chuckApiUrl = `https://api.chucknorris.io/jokes/random?category=${category}`;
     const modalWindow = document.querySelector('.modal-overlay');
-    get(chuckApiUrl).then(response => {
-        chuckSaysParagraph.innerHTML = response.value;
-        modalWindow.classList.toggle('open');
-        getBackgroundImage(category);
-    });
-};
+    const chuckSaysParagraph = document.querySelector('#chucksays');
+    const theChuck = await getWithAwait(chuckApiUrl);
+    chuckSaysParagraph.innerHTML = theChuck.value;
+    modalWindow.classList.toggle('open');
+    getBackgroundImage(category);
+}
 
-function getCategories(){
+const getCategories = async () => {
     const chuckCategoryApiUrl = 'https://api.chucknorris.io/jokes/categories';
     const categoryLabel = document.querySelector('#categorySelectLabel');
-    get(chuckCategoryApiUrl).then(response => {
-        const filteredCategories =  response.filter(category => {
-            if (category !== 'explicit'){
-                return category;
-            }
-        });
-        const categorySelect = document.createElement('select');
-        categoryLabel.appendChild(categorySelect);
-        filteredCategories.map(categoryElement => {
-            const categoryOption = document.createElement('option');
-            categoryOption.value = categoryElement;
-            categoryOption.innerHTML = `${categoryElement[0].toUpperCase() + categoryElement.substring(1)} Chuck`;
-            categorySelect.appendChild(categoryOption);
-        })
+    const chuckCategoryList = await getWithAwait(chuckCategoryApiUrl);
+    const filteredCategories =  chuckCategoryList.filter(category => {
+        if (category !== 'explicit'){
+            return category;
+        }
     });
-    
+    const categorySelect = document.createElement('select');
+    categoryLabel.appendChild(categorySelect);
+    filteredCategories.map(categoryElement => {
+        const categoryOption = document.createElement('option');
+        categoryOption.value = categoryElement;
+        categoryOption.innerHTML = `${categoryElement[0].toUpperCase() + categoryElement.substring(1)} Chuck`;
+        categorySelect.appendChild(categoryOption);
+    });
 }
 
 getCategories();
 getChuck(category);
 
-function getBackgroundImage(category) {
+const getBackgroundImage = async () => {
     const imageCategory = categoryToPixabaySearch(category);
     const pixaApiUrl = `https://pixabay.com/api/?key=15212881-66f33ab18e58d1ed2aa325c87&q=${imageCategory}`;
-    get(pixaApiUrl).then(response => {
-        setBackgound(response['hits'][getRandomInt(20)]['largeImageURL']);
-    });
+    const backgoundImage = await getWithAwait(pixaApiUrl);
+    setBackgound(backgoundImage['hits'][getRandomInt(20)]['largeImageURL']);   
 }
 
 function categoryToPixabaySearch(category){
@@ -85,4 +81,3 @@ function setBackgound(url){
     backgound.style.background = `url(${url}), no-repeat center center fixed`;
     backgound.style.backgroundSize = `cover`;
 }
-
